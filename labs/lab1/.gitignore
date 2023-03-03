@@ -172,4 +172,4 @@ gradle-app.setting
 
 ### Linguistic specific
 # Big files
-*.opcorpora
+*.opcorpora*
