@@ -1,17 +1,11 @@
-package main.java;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Lemmatizer {
     private final String dictionaryName;
@@ -23,10 +17,10 @@ public class Lemmatizer {
         loadLemmas();
     }
 
-    public void loadLemmas() throws FileNotFoundException, XMLStreamException {
+    public void loadLemmas() throws XMLStreamException {
         XMLInputFactory streamFactory = XMLInputFactory.newInstance();
         XMLEventReader reader = streamFactory.createXMLEventReader(
-                new FileInputStream("labs/lab1/src/main/resources/" + dictionaryName + ".xml"));
+                Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream(dictionaryName)));
         while (reader.hasNext()) {
             XMLEvent event = reader.nextEvent();
             if (event.isStartElement()) {
