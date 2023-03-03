@@ -13,10 +13,13 @@ public class WordParser {
 
         ArrayList<String> words = new ArrayList<>();
 
-        while (scanner.hasNext()){
+        while (scanner.hasNext()) {
             String s = scanner.next();
             if (!s.isEmpty() && rusWordPattern.matcher(s).matches()) {
-                words.add(s.toLowerCase(rusLocale));
+                if (s.contains("ё")) {
+                    System.out.println("Не зря");
+                }
+                words.add(s.toLowerCase(rusLocale).replace('ё', 'е'));
             }
         }
         return words;
