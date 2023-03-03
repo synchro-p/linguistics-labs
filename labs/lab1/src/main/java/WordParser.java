@@ -16,9 +16,6 @@ public class WordParser {
         while (scanner.hasNext()) {
             String s = scanner.next();
             if (!s.isEmpty() && rusWordPattern.matcher(s).matches()) {
-                if (s.contains("ё")) {
-                    System.out.println("Не зря");
-                }
                 words.add(s.toLowerCase(rusLocale).replace('ё', 'е'));
             }
         }
