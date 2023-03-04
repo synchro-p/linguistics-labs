@@ -5,20 +5,28 @@ import java.io.FileNotFoundException;
 
 public class Main {
     public static void main(String[] args) {
-        /*ArrayList<String> words = WordParser.parseRussianWordsFromCorpora(
-                Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream("output.txt")));
-        System.out.println(words.size());*/
 
-        String[] strings = new String[]{"ежик", "ребенком", "ребеночек", "кушала", "бумажные"};
+        ArrayList<String> words = WordParser.parseRussianWordsFromCorpora(
+                Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream("corpora/samoseyko/output.txt")));
+        System.out.println(words.size());
+        startup(400, "corpora/samoseyko/", ".txt");
+    }
 
+    private static void startup(int textsInCorpora, String prefix, String postfix) {
         Lemmatizer lemmatizer;
         try {
             lemmatizer = new Lemmatizer("dict.opcorpora.xml");
-            for (String s : strings) {
+        } catch (FileNotFoundException | XMLStreamException e) {
+            throw new RuntimeException("could not access specified dictionary");
+        }
+        for (int i = 0; i < textsInCorpora; i++) {
+            String filenameBuilder = prefix + i + postfix;
+            ArrayList<String> words = WordParser.parseRussianWordsFromCorpora(
+                Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream(filenameBuilder)));
+            for (String s : words) {
                 System.out.println("Original: " + s + " --> Lemma: " + lemmatizer.findLemmaForm(s));
             }
-        } catch (FileNotFoundException | XMLStreamException e) {
-            e.printStackTrace();
+            System.out.println("*********");
         }
     }
 }

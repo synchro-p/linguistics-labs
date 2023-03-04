@@ -5,18 +5,18 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class WordParser {
-    public static ArrayList<String> parseRussianWordsFromCorpora(InputStream corpora) {
-        Scanner scanner = new Scanner(corpora).useDelimiter("\\p{Punct}*\\s+");
+    public static ArrayList<String> parseRussianWordsFromCorpora(InputStream textFile) {
+        Scanner scanner = new Scanner(textFile).useDelimiter("\\p{Punct}*\\s+");
         Locale rusLocale = new Locale("ru");
 
         Pattern rusWordPattern = Pattern.compile("\\p{InCYRILLIC}+(-\\p{InCYRILLIC}+)?");
 
         ArrayList<String> words = new ArrayList<>();
 
-        while (scanner.hasNext()){
+        while (scanner.hasNext()) {
             String s = scanner.next();
             if (!s.isEmpty() && rusWordPattern.matcher(s).matches()) {
-                words.add(s.toLowerCase(rusLocale));
+                words.add(s.toLowerCase(rusLocale).replace('ё', 'е'));
             }
         }
         return words;
