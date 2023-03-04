@@ -5,11 +5,18 @@ import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) {
+        String s = "какой-то";
+        try {
+            Lemmatizer lemmatizer = new Lemmatizer("dict.opcorpora.xml");
+            System.out.println(lemmatizer.findLemmaForm(s));
+        } catch (XMLStreamException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        ArrayList<String> words = WordParser.parseRussianWordsFromCorpora(
+/*        ArrayList<String> words = WordParser.parseRussianWordsFromCorpora(
                 Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream("corpora/samoseyko/output.txt")));
         System.out.println(words.size());
-        startup(400, "corpora/samoseyko/", ".txt");
+        startup(400, "corpora/samoseyko/", ".txt");*/
     }
 
     private static void startup(int textsInCorpora, String prefix, String postfix) {
