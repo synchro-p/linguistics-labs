@@ -1,5 +1,3 @@
-package lemmatizer;
-
 import com.sun.tools.javac.Main;
 
 import javax.xml.namespace.QName;
