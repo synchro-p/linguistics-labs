@@ -1,3 +1,7 @@
+package lemmatizer;
+
+import com.sun.tools.javac.Main;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -37,9 +41,9 @@ public class Lemmatizer {
                         if (event.isStartElement()) {
                             startElement = event.asStartElement();
                             if (startElement.getName().getLocalPart().equals("l")) {
-                                lemmaForm = startElement.getAttributeByName(new QName("t")).getValue();
+                                lemmaForm = startElement.getAttributeByName(new QName("t")).getValue().replace("ё", "е");
                             } else if (startElement.getName().getLocalPart().equals("f")) {
-                                forms.add(startElement.getAttributeByName(new QName("t")).getValue());
+                                forms.add(startElement.getAttributeByName(new QName("t")).getValue().replace("ё", "е"));
                             }
                         }
                         if (event.isEndElement()) {
