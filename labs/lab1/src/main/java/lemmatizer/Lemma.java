@@ -1,3 +1,4 @@
+package lemmatizer;
 
 import java.util.ArrayList;
 import java.util.List;
