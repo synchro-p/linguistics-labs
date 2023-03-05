@@ -17,14 +17,13 @@ public class Main {
         }
 
         FrequencyDictionary frequencyDictionary = new CsvFrequencyDictionaryReader(Main.class.getResourceAsStream("freqrnc2011.csv")).parseFrequencies();
-        System.out.println(frequencyDictionary.getEntriesForWord("формочка"));
         Disambiguator disambiguator = new Disambiguator(frequencyDictionary);
 
-        HashMap<Lemma, StatisticContainer> freqDictionary = new HashMap<>();
+        HashMap<Lemma, StatisticContainer> resDictionary = new HashMap<>();
         for (int i = 0; i < textsInCorpora; i++) {
-            String filenameBuilder = prefix + i + postfix;
+            String filename = prefix + i + postfix;
             ArrayList<String> words = WordParser.parseRussianWordsFromCorpora(
-                    Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream(filenameBuilder)));
+                    Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream(filename)));
             for (String s : words) {
                 ArrayList<Lemma> lemmaList = lemmatizer.findLemmas(s);
                 List<String> splitStrings = new ArrayList<>();
@@ -38,26 +37,37 @@ public class Main {
                     }
                     if (lemmaList != null) {
                         Lemma lemma = disambiguator.pickOne(lemmaList);
-                        System.out.println(part + " --> " + (lemma == null ? "null" : lemma.toString()));
-                        StatisticContainer stats = freqDictionary.getOrDefault(lemma, new StatisticContainer(textsInCorpora));
+                        StatisticContainer stats = resDictionary.getOrDefault(lemma, new StatisticContainer(textsInCorpora));
                         stats.incrementOccurrencesInText(i);
-                        freqDictionary.put(lemma, stats);
+                        resDictionary.put(lemma, stats);
                     }
                     sum++;
                 }
             }
         }
 
-        System.out.println("**********");
-
-        for (StatisticContainer stat : freqDictionary.values()) {
+        for (StatisticContainer stat : resDictionary.values()) {
             stat.calculateTotalStats(sum);
         }
 
-        ArrayList<Lemma> sortedLemmas = new ArrayList<>(freqDictionary.keySet());
-        sortedLemmas.sort(Comparator.comparingDouble(x -> freqDictionary.get(x).getFrequency()));
-        for (Lemma lemma : sortedLemmas) {
-            System.out.println((lemma == null ? "null":lemma.getLemmaForm()) + ": " + freqDictionary.get(lemma).toString());
+        ArrayList<Lemma> sortedLemmas = new ArrayList<>(resDictionary.keySet());
+        sortedLemmas.sort(Comparator.comparing(x -> resDictionary.get(x).getFrequency()));
+        int printed = 0;
+        for (int i = 0; i < sortedLemmas.size() && printed < 100; i++) {
+            Lemma currentLemma = sortedLemmas.get(sortedLemmas.size() - i - 1);
+            if (!isRubbish(currentLemma)) {
+                System.out.println(currentLemma + " --- " + resDictionary.get(currentLemma).toString());
+                printed++;
+            }
         }
+    }
+    private static boolean isRubbish(Lemma l) {
+        if (l == null) {
+            return false;
+        }
+        return switch (l.getPartOfSpeech()) {
+            case "PREP" ,"CONJ","PRCL","INTJ" -> true;
+            default -> false;
+        };
     }
 }

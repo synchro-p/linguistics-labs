@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -42,6 +43,7 @@ public class StatisticContainer {
 
     @Override
     public String toString() {
-        return "{frequency = " + frequency.toString() + ", text frequency = " + textFrequency.toString() + "}";
+        DecimalFormat formatter = new DecimalFormat("#0.000");
+        return "{frequency = " + formatter.format(frequency*100) + "%, text frequency = " + formatter.format(textFrequency*100) + "%}";
     }
 }

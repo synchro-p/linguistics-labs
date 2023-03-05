@@ -29,11 +29,6 @@ public class Lemma {
     }
 
     public String toString() {
-        StringBuilder builder = new StringBuilder(lemmaForm);
-        for (String s : grammemes) {
-            builder.append(", ").append(s);
-        }
-        builder.append(";");
-        return builder.toString();
+         return getLemmaForm() + " : " + getGrammemes();
     }
 }
