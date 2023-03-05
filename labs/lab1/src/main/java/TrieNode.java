@@ -6,7 +6,6 @@ public class TrieNode {
     private final HashMap<Character, TrieNode> transitions;
     private final ArrayList<Lemma> lemmata;
 
-
     public void add(String wordForm, Lemma lemma) {
         if (wordForm.length() == level) {
             lemmata.add(lemma);

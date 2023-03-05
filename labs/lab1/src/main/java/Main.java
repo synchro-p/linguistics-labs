@@ -6,13 +6,6 @@ import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) {
-//        String s = "какой-то";
-//        try {
-//            Lemmatizer lemmatizer = new Lemmatizer("dict.opcorpora.xml");
-//            System.out.println(lemmatizer.findLemmaForm(s));
-//        } catch (XMLStreamException | FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
         startup(2, "corpora/samoseyko/", ".txt");
     }
 
@@ -30,20 +23,31 @@ public class Main {
             ArrayList<String> words = WordParser.parseRussianWordsFromCorpora(
                 Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream(filenameBuilder)));
             for (String s : words) {
-                Lemma lemma = lemmatizer.findLemma(s);
-                StatisticContainer stats = freqDictionary.getOrDefault(lemma, new StatisticContainer(textsInCorpora));
-                stats.incrementOccurrencesInText(i);
-                freqDictionary.put(lemma, stats);
+                ArrayList<Lemma> lemmaList = lemmatizer.findLemmas(s);
+                if (lemmaList != null) {
+                    for (Lemma lemma : lemmaList) {
+                        StatisticContainer stats = freqDictionary.getOrDefault(lemma, new StatisticContainer(textsInCorpora));
+                        stats.incrementOccurrencesInText(i);
+                        freqDictionary.put(lemma, stats);
+                        System.out.print(s + " --> " + lemma.getLemmaForm());
+                        for (String g : lemma.getGrammemes()) {
+                            System.out.print(", " + g);
+                        }
+                        System.out.println(".");
+                    }
+                }
                 sum++;
             }
         }
+
+        System.out.println("**********");
 
         for (StatisticContainer stat : freqDictionary.values()) {
             stat.calculateTotalStats(sum);
         }
 
-        for (Lemma s : freqDictionary.keySet()) {
-            System.out.println(s.getLemmaForm() + ": " + freqDictionary.get(s).toString());
+        for (Lemma lemma : freqDictionary.keySet()) {
+            System.out.println(lemma.getLemmaForm() + ": " + freqDictionary.get(lemma).toString());
         }
     }
 }
