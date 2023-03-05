@@ -29,7 +29,7 @@ public class Main {
 
                 for (String part : splitStrings) {
                     if (splitStrings.size() > 1) {
-                        lemmaList = lemmatizer.findLemmas(s);
+                        lemmaList = lemmatizer.findLemmas(part);
                     }
                     if (lemmaList != null) {
                         for (Lemma lemma : lemmaList) {
