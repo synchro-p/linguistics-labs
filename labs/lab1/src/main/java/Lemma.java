@@ -15,4 +15,13 @@ public class Lemma {
     }
 
     public List<String> getGrammemes() { return grammemes; }
+
+    public String toString() {
+        StringBuilder builder = new StringBuilder(lemmaForm);
+        for (String s : grammemes) {
+            builder.append(", ").append(s);
+        }
+        builder.append(";");
+        return builder.toString();
+    }
 }

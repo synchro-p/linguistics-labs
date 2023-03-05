@@ -10,6 +10,7 @@ public class Main {
     private static void startup(int textsInCorpora, String prefix, String postfix) {
         int sum = 0;
         Lemmatizer lemmatizer;
+        Disambiguator disambiguator = new Disambiguator();
         try {
             lemmatizer = new Lemmatizer("dict.opcorpora.xml");
         } catch (FileNotFoundException | XMLStreamException e) {
@@ -32,13 +33,12 @@ public class Main {
                         lemmaList = lemmatizer.findLemmas(part);
                     }
                     if (lemmaList != null) {
-                        for (Lemma lemma : lemmaList) {
-                            StatisticContainer stats = freqDictionary.getOrDefault(lemma, new StatisticContainer(textsInCorpora));
-                            stats.incrementOccurrencesInText(i);
-                            freqDictionary.put(lemma, stats);
-                        }
+                        Lemma lemma = disambiguator.pickOne(lemmaList);
+                        System.out.println(part + " --> " + (lemma == null ? "null" : lemma.toString()));
+                        StatisticContainer stats = freqDictionary.getOrDefault(lemma, new StatisticContainer(textsInCorpora));
+                        stats.incrementOccurrencesInText(i);
+                        freqDictionary.put(lemma, stats);
                     }
-                    printLemmas(part, lemmaList);
                     sum++;
                 }
             }
@@ -51,21 +51,7 @@ public class Main {
         }
 
         for (Lemma lemma : freqDictionary.keySet()) {
-            System.out.println(lemma.getLemmaForm() + ": " + freqDictionary.get(lemma).toString());
+            System.out.println((lemma == null ? "null":lemma.getLemmaForm()) + ": " + freqDictionary.get(lemma).toString());
         }
-    }
-
-    public static void printLemmas(String form, ArrayList<Lemma> lemmas) {
-        System.out.print(form + " --> ");
-        if (lemmas != null) {
-            for (Lemma lemma : lemmas) {
-                System.out.print(lemma.getLemmaForm());
-                for (String g : lemma.getGrammemes()) {
-                    System.out.print(", " + g);
-                }
-                System.out.print("; ");
-            }
-        }
-        System.out.println();
     }
 }
