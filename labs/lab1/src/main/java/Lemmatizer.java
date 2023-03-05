@@ -23,13 +23,14 @@ public class Lemmatizer {
         XMLInputFactory streamFactory = XMLInputFactory.newInstance();
         XMLEventReader reader = streamFactory.createXMLEventReader(
                 Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream(dictionaryName)));
+        boolean infNeeded = false;
         while (reader.hasNext()) {
             XMLEvent event = reader.nextEvent();
             if (event.isStartElement()) {
                 StartElement startElement = event.asStartElement();
                 if (startElement.getName().getLocalPart().equals("lemma")) {
-                    int id = Integer.parseInt(startElement.getAttributeByName(new QName("id")).getValue());
-                    List<String> forms = new ArrayList<>();
+                    //int id = Integer.parseInt(startElement.getAttributeByName(new QName("id")).getValue());
+                    Set<String> forms = new HashSet<>();
                     List<String> grammemes = new ArrayList<>();
                     String lemmaForm = null;
 
@@ -53,7 +54,15 @@ public class Lemmatizer {
 
                                         if (event.isStartElement()) {
                                             if (event.asStartElement().getName().getLocalPart().equals("g")) {
-                                                grammemes.add(event.asStartElement().getAttributeByName(new QName("v")).getValue());
+                                                String grammeme = event.asStartElement().getAttributeByName(new QName("v")).getValue();
+                                                if (grammeme.equals("VERB")) {
+                                                    //this is a verb lemma that should be replaced with infinitive lemma.
+                                                    forms.add(lemmaForm);
+                                                    infNeeded = true;
+                                                }
+                                                else {
+                                                    grammemes.add(grammeme);
+                                                }
                                             }
                                         }
                                     }
@@ -64,6 +73,37 @@ public class Lemmatizer {
                         if (event.isEndElement()) {
                             if (event.asEndElement().getName().getLocalPart().equals("lemma")) {
                                 flag = false;
+                                if (infNeeded) {
+                                    //read the infinitive version in next lemma
+                                    boolean flag2 = true;
+                                    while (flag2) {
+                                        event = reader.nextEvent();
+                                        if (event.isStartElement())
+                                            if (event.asStartElement().getName().getLocalPart().equals("l"))
+                                                flag2 = false;
+                                    }
+                                    lemmaForm = event.asStartElement().getAttributeByName(new QName("t")).getValue().replace("ё", "е");
+
+                                    //read the grammemes
+                                    flag2 = true;
+                                    while (flag2) {
+                                        event = reader.nextEvent();
+
+                                        if (event.isEndElement()) {
+                                            if (event.asEndElement().getName().getLocalPart().equals("l"))
+                                                flag2 = false;
+                                        }
+
+                                        if (event.isStartElement()) {
+                                            if (event.asStartElement().getName().getLocalPart().equals("g")) {
+                                                String grammeme = event.asStartElement().getAttributeByName(new QName("v")).getValue();
+                                                grammemes.add(grammeme);
+                                            }
+                                        }
+                                    }
+                                    infNeeded = false;
+                                    flag = true;
+                                }
                             }
                         }
                     }

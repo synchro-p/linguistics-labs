@@ -24,18 +24,21 @@ public class Main {
                 Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream(filenameBuilder)));
             for (String s : words) {
                 ArrayList<Lemma> lemmaList = lemmatizer.findLemmas(s);
+                System.out.print(s + " --> ");
                 if (lemmaList != null) {
                     for (Lemma lemma : lemmaList) {
                         StatisticContainer stats = freqDictionary.getOrDefault(lemma, new StatisticContainer(textsInCorpora));
                         stats.incrementOccurrencesInText(i);
                         freqDictionary.put(lemma, stats);
-                        System.out.print(s + " --> " + lemma.getLemmaForm());
+
+                        System.out.print(lemma.getLemmaForm());
                         for (String g : lemma.getGrammemes()) {
                             System.out.print(", " + g);
                         }
-                        System.out.println(".");
+                        System.out.print("; ");
                     }
                 }
+                System.out.println();
                 sum++;
             }
         }
