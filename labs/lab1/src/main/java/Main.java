@@ -1,8 +1,6 @@
 import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -21,25 +19,28 @@ public class Main {
         for (int i = 0; i < textsInCorpora; i++) {
             String filenameBuilder = prefix + i + postfix;
             ArrayList<String> words = WordParser.parseRussianWordsFromCorpora(
-                Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream(filenameBuilder)));
+                    Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream(filenameBuilder)));
             for (String s : words) {
                 ArrayList<Lemma> lemmaList = lemmatizer.findLemmas(s);
-                System.out.print(s + " --> ");
-                if (lemmaList != null) {
-                    for (Lemma lemma : lemmaList) {
-                        StatisticContainer stats = freqDictionary.getOrDefault(lemma, new StatisticContainer(textsInCorpora));
-                        stats.incrementOccurrencesInText(i);
-                        freqDictionary.put(lemma, stats);
+                List<String> splitStrings = new ArrayList<>();
+                if (lemmaList == null && s.contains("-"))
+                    splitStrings = Arrays.asList(s.split("-"));
+                else splitStrings.add(s);
 
-                        System.out.print(lemma.getLemmaForm());
-                        for (String g : lemma.getGrammemes()) {
-                            System.out.print(", " + g);
-                        }
-                        System.out.print("; ");
+                for (String part : splitStrings) {
+                    if (splitStrings.size() > 1) {
+                        lemmaList = lemmatizer.findLemmas(s);
                     }
+                    if (lemmaList != null) {
+                        for (Lemma lemma : lemmaList) {
+                            StatisticContainer stats = freqDictionary.getOrDefault(lemma, new StatisticContainer(textsInCorpora));
+                            stats.incrementOccurrencesInText(i);
+                            freqDictionary.put(lemma, stats);
+                        }
+                    }
+                    printLemmas(part, lemmaList);
+                    sum++;
                 }
-                System.out.println();
-                sum++;
             }
         }
 
@@ -52,5 +53,19 @@ public class Main {
         for (Lemma lemma : freqDictionary.keySet()) {
             System.out.println(lemma.getLemmaForm() + ": " + freqDictionary.get(lemma).toString());
         }
+    }
+
+    public static void printLemmas(String form, ArrayList<Lemma> lemmas) {
+        System.out.print(form + " --> ");
+        if (lemmas != null) {
+            for (Lemma lemma : lemmas) {
+                System.out.print(lemma.getLemmaForm());
+                for (String g : lemma.getGrammemes()) {
+                    System.out.print(", " + g);
+                }
+                System.out.print("; ");
+            }
+        }
+        System.out.println();
     }
 }
