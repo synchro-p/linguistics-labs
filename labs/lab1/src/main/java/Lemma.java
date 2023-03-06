@@ -19,13 +19,13 @@ public class Lemma {
 
     public List<String> getGrammemes() { return grammemes; }
 
-    public String getPartOfSpeech() {
+    public OpenCorporaPOS getPartOfSpeech() {
         for (String g : grammemes) {
             if (capsPattern.matcher(g).matches()) {
-                return g;
+                return OpenCorporaPOS.valueOf(g);
             }
         }
-        return "UNDEF";
+        return OpenCorporaPOS.valueOf("UNDEF");
     }
 
     public String toString() {
