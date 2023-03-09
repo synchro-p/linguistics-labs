@@ -1,17 +1,17 @@
 import java.util.ArrayList;
 
-public class Trie {
-    private final TrieNode root;
+public class Trie<E> {
+    private final TrieNode<E> root;
 
     public Trie() {
-        this.root = new TrieNode(0);
+        this.root = new TrieNode<>(0);
     }
 
-    public void add(String wordForm, Lemma lemma) {
+    public void add(String wordForm, E lemma) {
         root.add(wordForm, lemma);
     }
 
-    public ArrayList<Lemma> getLemmasForWord(String wordForm) {
+    public ArrayList<E> getResultsForWord(String wordForm) {
         return root.getLemmataForWord(wordForm);
     }
 }

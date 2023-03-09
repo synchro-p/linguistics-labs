@@ -11,11 +11,11 @@ import java.util.*;
 
 public class Lemmatizer {
     private final String dictionaryName;
-    private final Trie lemmaTrie;
+    private final Trie<Lemma> lemmaTrie;
 
     public Lemmatizer(String dictionaryName) throws XMLStreamException, FileNotFoundException {
         this.dictionaryName = dictionaryName;
-        lemmaTrie = new Trie();
+        lemmaTrie = new Trie<>();
         loadLemmas();
     }
 
@@ -118,6 +118,6 @@ public class Lemmatizer {
     }
 
     public ArrayList<Lemma> findLemmas(String wordForm) {
-        return lemmaTrie.getLemmasForWord(wordForm);
+        return lemmaTrie.getResultsForWord(wordForm);
     }
 }

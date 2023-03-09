@@ -4,18 +4,22 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        startup(2, "corpora/samoseyko/", ".txt");
+        startup(400, "corpora/samoseyko/", ".txt");
     }
 
     private static void startup(int textsInCorpora, String prefix, String postfix) {
         int sum = 0;
         Lemmatizer lemmatizer;
-        Disambiguator disambiguator = new Disambiguator();
         try {
             lemmatizer = new Lemmatizer("dict.opcorpora.xml");
         } catch (FileNotFoundException | XMLStreamException e) {
             throw new RuntimeException("could not access specified dictionary");
         }
+
+        FrequencyDictionary frequencyDictionary = new CsvFrequencyDictionaryReader(Main.class.getResourceAsStream("freqrnc2011.csv")).parseFrequencies();
+        System.out.println(frequencyDictionary.getEntriesForWord("формочка"));
+        Disambiguator disambiguator = new Disambiguator(frequencyDictionary);
+
         HashMap<Lemma, StatisticContainer> freqDictionary = new HashMap<>();
         for (int i = 0; i < textsInCorpora; i++) {
             String filenameBuilder = prefix + i + postfix;
@@ -50,7 +54,9 @@ public class Main {
             stat.calculateTotalStats(sum);
         }
 
-        for (Lemma lemma : freqDictionary.keySet()) {
+        ArrayList<Lemma> sortedLemmas = new ArrayList<>(freqDictionary.keySet());
+        sortedLemmas.sort(Comparator.comparingDouble(x -> freqDictionary.get(x).getFrequency()));
+        for (Lemma lemma : sortedLemmas) {
             System.out.println((lemma == null ? "null":lemma.getLemmaForm()) + ": " + freqDictionary.get(lemma).toString());
         }
     }
