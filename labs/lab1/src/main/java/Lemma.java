@@ -19,21 +19,16 @@ public class Lemma {
 
     public List<String> getGrammemes() { return grammemes; }
 
-    public String getPartOfSpeech() {
+    public OpenCorporaPOS getPartOfSpeech() {
         for (String g : grammemes) {
             if (capsPattern.matcher(g).matches()) {
-                return g;
+                return OpenCorporaPOS.valueOf(g);
             }
         }
-        return "UNDEF";
+        return OpenCorporaPOS.valueOf("UNDEF");
     }
 
     public String toString() {
-        StringBuilder builder = new StringBuilder(lemmaForm);
-        for (String s : grammemes) {
-            builder.append(", ").append(s);
-        }
-        builder.append(";");
-        return builder.toString();
+         return getLemmaForm() + " : " + getGrammemes();
     }
 }

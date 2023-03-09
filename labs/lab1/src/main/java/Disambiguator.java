@@ -34,7 +34,7 @@ public class Disambiguator {
         }
         for (FrequencyDictionaryEntry entry : dictionary.getEntriesForWord(lemma.getLemmaForm())) {
             if (entry.frequency() > currentMax
-                    && OpencorporaToFreqrncPOSConverter.convert(lemma.getPartOfSpeech()).equals(entry.partOfSpeech())
+                    && lemma.getPartOfSpeech().toFreqrncPOS().equals(entry.partOfSpeech())
             ) {
                 currentMax = entry.frequency();
             }

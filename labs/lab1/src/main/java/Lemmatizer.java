@@ -75,6 +75,7 @@ public class Lemmatizer {
                                 flag = false;
                                 if (infNeeded) {
                                     //read the infinitive version in next lemma
+                                    grammemes = new ArrayList<>();
                                     boolean flag2 = true;
                                     while (flag2) {
                                         event = reader.nextEvent();
