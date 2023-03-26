@@ -1,3 +1,7 @@
+package linguistic_labs.commons.lemma;
+
+import linguistic_labs.commons.freq.OpenCorporaPOS;
+
 import java.util.List;
 import java.util.regex.Pattern;
 

@@ -1,3 +1,5 @@
+package linguistic_labs.commons.trie;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

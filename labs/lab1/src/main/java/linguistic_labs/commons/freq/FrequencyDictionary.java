@@ -1,3 +1,7 @@
+package linguistic_labs.commons.freq;
+
+import linguistic_labs.commons.trie.Trie;
+
 import java.util.List;
 
 public class FrequencyDictionary {

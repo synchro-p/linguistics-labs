@@ -1,4 +1,8 @@
-import java.util.*;
+package linguistic_labs.commons.freq;
+
+import linguistic_labs.commons.lemma.Lemma;
+
+import java.util.List;
 
 public class Disambiguator {
 

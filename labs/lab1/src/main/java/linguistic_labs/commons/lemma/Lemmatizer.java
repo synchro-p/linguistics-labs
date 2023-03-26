@@ -1,4 +1,7 @@
+package linguistic_labs.commons.lemma;
+
 import com.sun.tools.javac.Main;
+import linguistic_labs.commons.trie.Trie;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;

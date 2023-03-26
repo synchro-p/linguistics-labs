@@ -1,3 +1,5 @@
+package linguistic_labs.lab1;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;

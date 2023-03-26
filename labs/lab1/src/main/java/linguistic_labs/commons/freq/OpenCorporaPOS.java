@@ -1,3 +1,5 @@
+package linguistic_labs.commons.freq;
+
 public enum OpenCorporaPOS {
     NOUN, ADJF, ADJS, COMP, VERB, INFN, PRTF, PRTS, GRND, NUMR, ADVB, NPRO, PRED, PREP, CONJ, PRCL, INTJ, UNDEF;
 

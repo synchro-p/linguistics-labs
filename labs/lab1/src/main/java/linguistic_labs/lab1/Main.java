@@ -1,3 +1,11 @@
+package linguistic_labs.lab1;
+
+import linguistic_labs.commons.freq.CsvFrequencyDictionaryReader;
+import linguistic_labs.commons.freq.Disambiguator;
+import linguistic_labs.commons.freq.FrequencyDictionary;
+import linguistic_labs.commons.lemma.Lemma;
+import linguistic_labs.commons.lemma.Lemmatizer;
+
 import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
 import java.util.*;
