@@ -9,6 +9,9 @@ import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ConcordMain {
     public static void main(String[] args) {
@@ -30,6 +33,26 @@ public class ConcordMain {
         String a = "мама мыла раму собарнаяавы";
 
         tokenizer.tokenizeText(new ByteArrayInputStream(a.getBytes(StandardCharsets.UTF_8)));
-        System.out.println(normalizer.normalizeWords(tokenizer.getWords()));
+        List<String> normalizedTokens = normalizer.normalizeWords(tokenizer.getWords());
+
+        HashMap<Context, Integer> map = new HashMap<>();
+        //get that from ContextFinder
+        ConcordanceFinder finder = new ConcordanceFinder(normalizedTokens);
+
+        List<Context> contexts = finder.getCorcordance(List.of("мама"), 1);
+        for (Context c : contexts) {
+            if (map.containsKey(c)) {
+                map.put(c, map.get(c)+1);
+            }
+            else {
+                map.put(c, 1);
+            }
+        }
+
+        //todo sort contexts
+
+        for (Map.Entry<Context, Integer> e : map.entrySet()) {
+            System.out.println(e.getKey().getTokens() + " : " + e.getValue());
+        }
     }
 }
