@@ -20,7 +20,7 @@ public class ConcordNormalizer {
         ArrayList<String> res = new ArrayList<>();
         for (String word : rawWords) {
             List<Lemma> lemmata = lemmatizer.findLemmas(word);
-            if (lemmata == null) {
+            if (lemmata == null || lemmata.isEmpty()) {
                 res.add(word);
             }
             else {

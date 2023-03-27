@@ -27,6 +27,9 @@ public class Disambiguator {
                 maxLemma = possibleLemma;
             }
         }
+        if (maxLemma == null) {
+            return lemmata.get(0);
+        }
         return maxLemma;
     }
 

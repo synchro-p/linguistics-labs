@@ -6,10 +6,12 @@ import linguistic_labs.commons.freq.FrequencyDictionary;
 import linguistic_labs.commons.lemma.Lemmatizer;
 
 import javax.xml.stream.XMLStreamException;
-import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConcordMain {
     public static void main(String[] args) {
@@ -28,15 +30,17 @@ public class ConcordMain {
         ConcordTokenizer tokenizer = new ConcordTokenizer();
         ConcordNormalizer normalizer = new ConcordNormalizer(lemmatizer, disambiguator);
 
-        String a = "мама мыла раму абырвалг мама мыла мама раму мыла мылом мыть умыть";
+        for (int i = 0; i < 400; i++) {
+            String name = "corpora/samoseyko/" + i + ".txt";
+            tokenizer.tokenizeText(ConcordMain.class.getClassLoader().getResourceAsStream(name));
+        }
 
-        tokenizer.tokenizeText(new ByteArrayInputStream(a.getBytes(StandardCharsets.UTF_8)));
         List<String> normalizedTokens = normalizer.normalizeWords(tokenizer.getWords());
 
         HashMap<Context, Integer> map = new HashMap<>();
         ConcordanceFinder finder = new ConcordanceFinder(normalizedTokens);
 
-        List<Context> contexts = finder.getCorcordance(List.of("мама"), 2);
+        List<Context> contexts = finder.getCorcordance(List.of("работа"), 2);
         for (Context c : contexts) {
             map.merge(c, 1, Integer::sum);
         }
@@ -44,8 +48,10 @@ public class ConcordMain {
         Comparator<Context> sortComparator = Comparator.<Context>comparingInt((c -> c.getContextType().getPriority())).
                 thenComparingInt(c -> map.get(c) * -1).thenComparingInt(c -> c.getLength() * -1);
 
-        ArrayList<Context> sortedContexts = new ArrayList<>(map.keySet().stream().toList());
-        sortedContexts.sort(sortComparator);
+        ArrayList<Context> sortedContexts = map.keySet().stream()
+                .filter(e -> map.get(e) > 5)
+                .sorted(sortComparator)
+                .collect(Collectors.toCollection(ArrayList::new));
 
         for (Context c : sortedContexts) {
             System.out.println(c.getTokens() + " : " + map.get(c));
