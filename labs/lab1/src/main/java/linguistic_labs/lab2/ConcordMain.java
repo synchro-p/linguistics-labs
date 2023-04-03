@@ -7,14 +7,16 @@ import linguistic_labs.commons.lemma.Lemmatizer;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConcordMain {
     public static void main(String[] args) {
+        List<String> query = new ArrayList<>(Arrays.asList(args).subList(5, args.length));
+        doStuff(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], args[3], Integer.parseInt(args[4]), query);
+    }
+
+    private static void doStuff(int threshold, int n_texts, String prefix, String postfix, int maxContextLength, List<String> query) {
         Lemmatizer lemmatizer;
         try {
             lemmatizer = new Lemmatizer("dict.opcorpora.xml");
@@ -30,8 +32,8 @@ public class ConcordMain {
         ConcordTokenizer tokenizer = new ConcordTokenizer();
         ConcordNormalizer normalizer = new ConcordNormalizer(lemmatizer, disambiguator);
 
-        for (int i = 0; i < 400; i++) {
-            String name = "corpora/samoseyko/" + i + ".txt";
+        for (int i = 0; i < n_texts; i++) {
+            String name = prefix + i + postfix;
             tokenizer.tokenizeText(ConcordMain.class.getClassLoader().getResourceAsStream(name));
         }
 
@@ -40,7 +42,7 @@ public class ConcordMain {
         HashMap<Context, Integer> map = new HashMap<>();
         ConcordanceFinder finder = new ConcordanceFinder(normalizedTokens);
 
-        List<Context> contexts = finder.getCorcordance(List.of("работа"), 2);
+        List<Context> contexts = finder.getCorcordance(query, maxContextLength);
         for (Context c : contexts) {
             map.merge(c, 1, Integer::sum);
         }
@@ -49,7 +51,7 @@ public class ConcordMain {
                 thenComparingInt(c -> map.get(c) * -1).thenComparingInt(c -> c.getLength() * -1);
 
         ArrayList<Context> sortedContexts = map.keySet().stream()
-                .filter(e -> map.get(e) > 5)
+                .filter(e -> map.get(e) > threshold)
                 .sorted(sortComparator)
                 .collect(Collectors.toCollection(ArrayList::new));
 
