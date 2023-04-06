@@ -1,3 +1,5 @@
+package linguistic_labs.lab1;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,3 +1,5 @@
+package linguistic_labs.commons.freq;
+
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;

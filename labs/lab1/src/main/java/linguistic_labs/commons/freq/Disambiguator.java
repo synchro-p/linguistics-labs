@@ -1,4 +1,8 @@
-import java.util.*;
+package linguistic_labs.commons.freq;
+
+import linguistic_labs.commons.lemma.Lemma;
+
+import java.util.List;
 
 public class Disambiguator {
 
@@ -22,6 +26,9 @@ public class Disambiguator {
                 maxFreq = currentMax;
                 maxLemma = possibleLemma;
             }
+        }
+        if (maxLemma == null) {
+            return lemmata.get(0);
         }
         return maxLemma;
     }
