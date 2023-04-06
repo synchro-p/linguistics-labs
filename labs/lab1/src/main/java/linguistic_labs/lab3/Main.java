@@ -9,15 +9,13 @@ import linguistic_labs.lab2.ConcordTokenizer;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
         int textsInCorpora = 400;
         int N = 3;
-        String prefix = "corpora/samoseyko/";
+        String prefix = "bragunetzki/";
         String postfix = ".txt";
 
         Lemmatizer lemmatizer;
@@ -55,11 +53,28 @@ public class Main {
             List<int[]> positions = res.get(ngram);
             if(positions.size()>3){
                 System.out.print(ngram + ": ");
+                Set<Integer> textSet = new HashSet<>();
                 for (int[] i : positions) {
-                    System.out.print("T " + i[0] + ", P " + i[1] + "; ");
+                    //System.out.print("T " + i[0] + ", P " + i[1] + "; ");
+                    textSet.add(i[0]);
                 }
+                System.out.print("Freq: " + ((double) positions.size() / sum) + "; ");
+                System.out.print("Text freq: " + ((double) textSet.size() / textsInCorpora));
                 System.out.println();
             }
+        }
+
+        String query = Arrays.asList(args).get(0);
+        List<List<String>> result = new ArrayList<>();
+        for (List<String> ngram : res.keySet()) {
+            if (ngram.contains(query)) {
+                result.add(ngram);
+            }
+        }
+        System.out.println("-************-");
+        System.out.println("Search result by query " + query);
+        for (List<String> n : result) {
+            System.out.println(n);
         }
     }
 }
