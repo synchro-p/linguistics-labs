@@ -1,0 +1,29 @@
+[
+  {
+    "type": "valency",
+    "variants": [
+      {
+        "POS": "NOUN",
+        "case": "nomn",
+        "anim": "anim"
+      }
+    ]
+  },
+  {
+    "type": "target",
+    "lemma": "есть",
+    "disc_attributes": {
+      "POS": "INFN"
+    }
+  },
+  {
+    "type": "valency",
+    "variants": [
+      {
+        "POS": "NOUN",
+        "case": "accs"
+      },
+      null
+    ]
+  }
+]
