@@ -23,7 +23,7 @@ public class ConcordTokenizer {
         while (scanner.hasNext()) {
             String s = scanner.next();
             if (!s.isEmpty() && rusWordPattern.matcher(s).matches()) {
-                words.add(s.toLowerCase(rusLocale).replace('ё', 'е'));
+                words.add(s.toLowerCase(rusLocale).replace("ё", "е"));
             }
         }
     }

@@ -1,1 +1,56 @@
-[{"type":"valency","variants":[{"POS":"NOUN","case":"nomn","anim":"anim"},{"POS":"NOUN","case":"nomn","Orgn":"Orgn","anim":"inan"},{"POS":"NPRO","case":"nomn"}]},{"type":"target","lemma":"вручить","disc_attributes":{"POS":"INFN"}},{"type":"valency","variants":[{"POS":"NOUN","case":"datv","anim":"anim"},{"POS":"NPRO","case":"dativ"}]},{"type":"valency","variants":[{"POS":"NOUN","case":"accs"},{"POS":"NPRO","case":"accs"}]}]
+[
+  {
+    "type": "valency",
+    "variants": [
+      {
+        "POS": "NOUN",
+        "case": "nomn",
+        "anim": "anim"
+      },
+      {
+        "POS": "NOUN",
+        "case": "nomn",
+        "Orgn": "Orgn",
+        "anim": "inan"
+      },
+      {
+        "POS": "NPRO",
+        "case": "nomn"
+      }
+    ]
+  },
+  {
+    "type": "target",
+    "lemma": "вручить",
+    "disc_attributes": {
+      "POS": "INFN"
+    }
+  },
+  {
+    "type": "valency",
+    "variants": [
+      {
+        "POS": "NOUN",
+        "case": "datv",
+        "anim": "anim"
+      },
+      {
+        "POS": "NPRO",
+        "case": "dativ"
+      }
+    ]
+  },
+  {
+    "type": "valency",
+    "variants": [
+      {
+        "POS": "NOUN",
+        "case": "accs"
+      },
+      {
+        "POS": "NPRO",
+        "case": "accs"
+      }
+    ]
+  }
+]
