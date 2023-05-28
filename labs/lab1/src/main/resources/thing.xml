@@ -1,0 +1,60 @@
+<lemma id="141390" rev="141390">
+    <l t="кошка">
+        <g v="NOUN"/>
+        <g v="inan"/>
+        <g v="femn"/>
+    </l>
+    <f t="кошка">
+        <g v="sing"/>
+        <g v="nomn"/>
+    </f>
+    <f t="кошки">
+        <g v="sing"/>
+        <g v="gent"/>
+    </f>
+    <f t="кошке">
+        <g v="sing"/>
+        <g v="datv"/>
+    </f>
+    <f t="кошку">
+        <g v="sing"/>
+        <g v="accs"/>
+    </f>
+    <f t="кошкой">
+        <g v="sing"/>
+        <g v="ablt"/>
+    </f>
+    <f t="кошкою">
+        <g v="sing"/>
+        <g v="ablt"/>
+        <g v="V-oy"/>
+    </f>
+    <f t="кошке">
+        <g v="sing"/>
+        <g v="loct"/>
+    </f>
+    <f t="кошки">
+        <g v="plur"/>
+        <g v="nomn"/>
+    </f>
+    <f t="кошек">
+        <g v="plur"/>
+        <g v="gent"/>
+    </f>
+    <f t="кошкам">
+        <g v="plur"/>
+        <g v="datv"/>
+    </f>
+    <f t="кошки">
+        <g v="plur"/>
+        <g v="accs"/>
+    </f>
+    <f t="кошками">
+        <g v="plur"/>
+        <g v="ablt"/>
+    </f>
+    <f t="кошках">
+        <g v="plur"/>
+        <g v="loct"/>
+    </f>
+</lemma>

@@ -33,7 +33,7 @@ public class Lemmatizer {
                 StartElement startElement = event.asStartElement();
                 if (startElement.getName().getLocalPart().equals("lemma")) {
                     //int id = Integer.parseInt(startElement.getAttributeByName(new QName("id")).getValue());
-                    Set<String> forms = new HashSet<>();
+                    Set<WordForm> forms = new HashSet<>();
                     List<String> grammemes = new ArrayList<>();
                     String lemmaForm = null;
 
@@ -46,6 +46,7 @@ public class Lemmatizer {
                             switch (startElement.getName().getLocalPart()) {
                                 case "l" -> {
                                     lemmaForm = startElement.getAttributeByName(new QName("t")).getValue().replace("ё", "е");
+
                                     boolean flag2 = true;
                                     while (flag2) {
                                         event = reader.nextEvent();
@@ -60,7 +61,7 @@ public class Lemmatizer {
                                                 String grammeme = event.asStartElement().getAttributeByName(new QName("v")).getValue();
                                                 if (grammeme.equals("VERB")) {
                                                     //this is a verb lemma that should be replaced with infinitive lemma.
-                                                    forms.add(lemmaForm);
+                                                    forms.add(new WordForm(lemmaForm, null));
                                                     infNeeded = true;
                                                 }
                                                 else {
@@ -70,7 +71,28 @@ public class Lemmatizer {
                                         }
                                     }
                                 }
-                                case "f" -> forms.add(startElement.getAttributeByName(new QName("t")).getValue().replace("ё", "е"));
+                                case "f" -> {
+                                    String form = startElement.getAttributeByName(new QName("t")).getValue().replace("ё", "е");
+                                    String formCase = null;
+                                    if (grammemes.contains("NOUN")) {
+                                        boolean flag2 = true;
+                                        while (flag2) {
+                                            event = reader.nextEvent();
+
+                                            if (event.isEndElement()) {
+                                                if (event.asEndElement().getName().getLocalPart().equals("f"))
+                                                    flag2 = false;
+                                            }
+
+                                            if (event.isStartElement()) {
+                                                if (event.asStartElement().getName().getLocalPart().equals("g")) {
+                                                    formCase = event.asStartElement().getAttributeByName(new QName("v")).getValue();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    forms.add(new WordForm(form, formCase));
+                                }
                             }
                         }
                         if (event.isEndElement()) {
@@ -112,9 +134,19 @@ public class Lemmatizer {
                         }
                     }
 
-                    Lemma newLemma = new Lemma(lemmaForm, grammemes);
-                    for (String form : forms) {
-                        lemmaTrie.add(form, newLemma);
+
+                    if (grammemes.contains("NOUN")) {
+                        for (WordForm form : forms) {
+                            List<String> formGrammemes = new ArrayList<>(grammemes);
+                            formGrammemes.add(form.formCase);
+                            lemmaTrie.add(form.form, new Lemma(lemmaForm, formGrammemes));
+                        }
+                    }
+                    else {
+                        Lemma newLemma = new Lemma(lemmaForm, grammemes);
+                        for (WordForm form : forms) {
+                            lemmaTrie.add(form.form, newLemma);
+                        }
                     }
                 }
             }

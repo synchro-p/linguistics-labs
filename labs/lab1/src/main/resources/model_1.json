@@ -21,9 +21,8 @@
     "variants": [
       {
         "POS": "NOUN",
-        "case": "accs"
-      },
-      null
+        "case": "nomn"
+      }
     ]
   }
 ]

@@ -19,6 +19,7 @@ public class JSONModelValidator {
             return false;
         } else if (part instanceof JSONModelValency valency) {
             for (HashMap<String, String> variant : valency.variants) {
+
                 boolean fits = true;
                 for (String attr : variant.values()) {
                     if (!lemma.getGrammemes().contains(attr)) {
