@@ -99,31 +99,34 @@ public class Lemmatizer {
                             if (event.asEndElement().getName().getLocalPart().equals("lemma")) {
                                 flag = false;
                                 if (infNeeded) {
-                                    //read the infinitive version in next lemma
+                                    //read the infinitive version in next lemmas
                                     grammemes = new ArrayList<>();
-                                    boolean flag2 = true;
-                                    while (flag2) {
-                                        event = reader.nextEvent();
-                                        if (event.isStartElement())
-                                            if (event.asStartElement().getName().getLocalPart().equals("l"))
-                                                flag2 = false;
-                                    }
-                                    lemmaForm = event.asStartElement().getAttributeByName(new QName("t")).getValue().replace("ё", "е");
-
-                                    //read the grammemes
-                                    flag2 = true;
-                                    while (flag2) {
-                                        event = reader.nextEvent();
-
-                                        if (event.isEndElement()) {
-                                            if (event.asEndElement().getName().getLocalPart().equals("l"))
-                                                flag2 = false;
+                                    while (!grammemes.contains("INFN")) {
+                                        grammemes.clear();
+                                        boolean flag2 = true;
+                                        while (flag2) {
+                                            event = reader.nextEvent();
+                                            if (event.isStartElement())
+                                                if (event.asStartElement().getName().getLocalPart().equals("l"))
+                                                    flag2 = false;
                                         }
+                                        lemmaForm = event.asStartElement().getAttributeByName(new QName("t")).getValue().replace("ё", "е");
 
-                                        if (event.isStartElement()) {
-                                            if (event.asStartElement().getName().getLocalPart().equals("g")) {
-                                                String grammeme = event.asStartElement().getAttributeByName(new QName("v")).getValue();
-                                                grammemes.add(grammeme);
+                                        //read the grammemes
+                                        flag2 = true;
+                                        while (flag2) {
+                                            event = reader.nextEvent();
+
+                                            if (event.isEndElement()) {
+                                                if (event.asEndElement().getName().getLocalPart().equals("l"))
+                                                    flag2 = false;
+                                            }
+
+                                            if (event.isStartElement()) {
+                                                if (event.asStartElement().getName().getLocalPart().equals("g")) {
+                                                    String grammeme = event.asStartElement().getAttributeByName(new QName("v")).getValue();
+                                                    grammemes.add(grammeme);
+                                                }
                                             }
                                         }
                                     }

@@ -6,12 +6,17 @@
         "POS": "NOUN",
         "case": "nomn",
         "anim": "anim"
+      },
+      {
+        "POS": "NPRO",
+        "case": "nomn",
+        "anim": "anim"
       }
     ]
   },
   {
     "type": "target",
-    "lemma": "есть",
+    "lemma": "мочь",
     "disc_attributes": {
       "POS": "INFN"
     }
@@ -20,8 +25,7 @@
     "type": "valency",
     "variants": [
       {
-        "POS": "NOUN",
-        "case": "nomn"
+        "POS": "INFN"
       }
     ]
   }

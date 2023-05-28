@@ -8,20 +8,15 @@
         "anim": "anim"
       },
       {
-        "POS": "NOUN",
-        "case": "nomn",
-        "Orgn": "Orgn",
-        "anim": "inan"
-      },
-      {
         "POS": "NPRO",
-        "case": "nomn"
+        "case": "nomn",
+        "anim": "anim"
       }
     ]
   },
   {
     "type": "target",
-    "lemma": "вручить",
+    "lemma": "исследовать",
     "disc_attributes": {
       "POS": "INFN"
     }
@@ -31,25 +26,11 @@
     "variants": [
       {
         "POS": "NOUN",
-        "case": "datv",
-        "anim": "anim"
+        "case": "accs"
       },
-      {
-        "POS": "NPRO",
-        "case": "dativ"
-      }
-    ]
-  },
-  {
-    "type": "valency",
-    "variants": [
       {
         "POS": "NOUN",
-        "case": "accs"
-      },
-      {
-        "POS": "NPRO",
-        "case": "accs"
+        "case": "nomn"
       }
     ]
   }
