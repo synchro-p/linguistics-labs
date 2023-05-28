@@ -12,7 +12,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        startup(400, "corpora/samoseyko/", ".txt", false);
+        startup(400, "corpora/samoseyko/", ".txt", true);
     }
 
     private static void startup(int textsInCorpora, String prefix, String postfix, boolean clearRubbishFlag) {
@@ -26,7 +26,7 @@ public class Main {
 
         FrequencyDictionary frequencyDictionary =
                 new CsvFrequencyDictionaryReader(
-                        Main.class.getResourceAsStream("freqrnc2011.csv")).parseFrequencies();
+                        Main.class.getClassLoader().getResourceAsStream("freqrnc2011.csv")).parseFrequencies();
         Disambiguator disambiguator = new Disambiguator(frequencyDictionary);
 
         HashMap<Lemma, StatisticContainer> resDictionary = new HashMap<>();
