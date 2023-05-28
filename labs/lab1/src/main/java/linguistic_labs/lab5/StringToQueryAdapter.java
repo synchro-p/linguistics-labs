@@ -36,7 +36,7 @@ public class StringToQueryAdapter {
         for(String word : normalizedWords) {
             GlossaryEntry entry = glossary.get(word);
             if (entry != null) {
-                res.put(entry.word(), entry.wordWeight());
+                res.put(entry.word(), entry.weight());
                 res.putAll(entry.associated());
             }
         }

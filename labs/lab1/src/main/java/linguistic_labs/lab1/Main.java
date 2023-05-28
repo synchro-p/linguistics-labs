@@ -12,7 +12,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        startup(400, "corpora/samoseyko/", ".txt", true);
+        startup(400, "bragunetzki/", ".txt", true);
     }
 
     private static void startup(int textsInCorpora, String prefix, String postfix, boolean clearRubbishFlag) {

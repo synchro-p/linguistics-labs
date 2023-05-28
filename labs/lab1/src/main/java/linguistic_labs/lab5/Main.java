@@ -1,5 +1,7 @@
 package linguistic_labs.lab5;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import linguistic_labs.commons.freq.CsvFrequencyDictionaryReader;
 import linguistic_labs.commons.freq.Disambiguator;
 import linguistic_labs.commons.freq.FrequencyDictionary;
@@ -9,6 +11,7 @@ import linguistic_labs.lab2.ConcordTokenizer;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
@@ -26,10 +29,14 @@ public class Main {
         Disambiguator disambiguator = new Disambiguator(frequencyDictionary);
         ConcordNormalizer normalizer = new ConcordNormalizer(lemmatizer, disambiguator);
 
-        Map<String, GlossaryEntry> glossary = new HashMap<>();
-        //TODO glossary
-        glossary.put("стекло", new GlossaryEntry("стекло", Map.of(), 1.0));
-        glossary.put("ломать", new GlossaryEntry("ломать", Map.of("перелом", 0.6, "стекло", 0.3), 1.0));
+        Map<String, GlossaryEntry> glossary;
+
+        JSONDictParser parser = new JSONDictParser();
+        JsonArray array = (JsonArray) JsonParser.parseReader(
+                new InputStreamReader(Objects.requireNonNull(Main.class.getClassLoader()
+                        .getResourceAsStream("glossary.json"))));
+        parser.setModelArray(array);
+        glossary = parser.parse();
 
         StringToQueryAdapter adapter = new StringToQueryAdapter(normalizer);
 
@@ -51,7 +58,7 @@ public class Main {
         ArrayList<Integer> lengths = new ArrayList<>(400);
         for (int i = 0; i < 400; i++) {
             ConcordTokenizer tokenizer = new ConcordTokenizer();
-            tokenizer.tokenizeText(Main.class.getClassLoader().getResourceAsStream("corpora/samoseyko/" + i + ".txt"));
+            tokenizer.tokenizeText(Main.class.getClassLoader().getResourceAsStream("bragunetzki/" + i + ".txt"));
             List<String> normalizedWordsFromCorpora = normalizer.normalizeWords(tokenizer.getWords());
 
             int length = 0;
@@ -71,7 +78,7 @@ public class Main {
         evaluator.countAverageLength();
 
         //TODO adequate list
-        ArrayList<String> requests = new ArrayList<>(List.of("стекла","стеклу", "ломал стекло", "ломаю"));
+        ArrayList<String> requests = new ArrayList<>(List.of("работа", "работы", "статья проблемы"));
 
         ArrayList<Map<String, Double>> queries = new ArrayList<>();
         for (String request : requests) {
